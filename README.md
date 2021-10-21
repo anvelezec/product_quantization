@@ -1,1 +1,1 @@
-# product_quantization
+# Product quantization
