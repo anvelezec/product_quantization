@@ -8,7 +8,7 @@ iter_type = int
 class ProductQuantization:
     def __init__(self, K: int, M:int) -> None:
         self.M = M # Number space sub-partitions
-        self.K = K # Number of cluster in a sub-partition
+        self.K = K # Number of clusters in a sub-partition
         
 
     def fit(self, X: x_type, iter:iter_type):
@@ -34,8 +34,8 @@ class ProductQuantization:
             self.centroids[m], _ = kmeans2(sub_vector, self.K, iter)
 
     def encode(self, X: x_type):
-        # instances X M
-        self.X_encoded = np.empty((X.shape[0], self.M))
+        # X.shaoe[0] (Instances) by M
+        self.X_encoded = np.empty((X.shape[0], self.M), np.int8)
         for m in range(self.M):
             X_subspace = X[:, (self.delta * m):(self.delta * (m + 1))]
             self.X_encoded[:, m], _ = vq(X_subspace, self.centroids[m])
@@ -45,10 +45,15 @@ class ProductQuantization:
         self.encode(X)
         
     def decode(self):
-        pass
+        instances, _ = self.X_encoded.shape
+        self.X_decoded = np.empty((instances, self.delta * self.M), dtype=np.float32)
+        for m in self.M:
+            instances_encoded_values = self.X_encoded[:, m]
+            self.X_decoded[:, self.delta * m: (m + 1) * self.delta] = self.centroids[m][instances_encoded_values, :]
 
 if __name__ == "__main__":
     X = np.random.randn(15,40)
     pq = ProductQuantization(K=4, M=8)
     pq.fit(X, iter=20)
     pq.encode(X)
+    pq
