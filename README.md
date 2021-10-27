@@ -1,7 +1,6 @@
 # Product quantization
 
-This repository is a introduction to Product Quantization (PQ). Product Quantization class allows to do mathematical operations directly on the compressed matrix representations. The class has the sklearn standar methods: fit, encode, transform  and its written in pure python.
-
+This repository is an introduction to Product Quantization (PQ). Product Quantization class allows us to do mathematical operations directly on the compressed matrix representations. The class has the sklearn standard methods: fit, encode, transform and its written in pure python.
 
 ## References
 * https://github.com/dblalock/bolt
